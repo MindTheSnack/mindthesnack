@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MindTheSnack - Healthy Vending</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-dark: #0f172a; /* Slate 900 - Professional Deep Blue */
+    --primary: #f8fafc; /* Slate 50 (Text) */
+    --second: #cbd5e1; /* Slate 300 (Secondary Text) */
+    --accent: #38bdf8; /* Sky Blue (Modern Freshness) */
+    --accent-glow: #0ea5e9; /* Sky 500 */
+    --glass: rgba(30, 41, 59, 0.7); /* Slate 800 glass */
+    --glass-border: rgba(56, 189, 248, 0.2); /* Subtle Sky Border */
+    --shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--primary);
+    background: var(--bg-dark);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* UTILITY */
+  .fade-in { animation: fadeIn 0.8s ease forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* NAVIGATION (Bottom) */
+  .bottom-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.8);
+    padding: 12px 30px;
+    border-radius: 50px;
+    display: flex;
+    gap: 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    border: 1px solid var(--glass-border);
+    z-index: 1000;
+    transition: 0.3s;
+    backdrop-filter: blur(16px);
+  }
+  .bottom-nav button {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+  }
+  .bottom-nav button:hover, .bottom-nav button.active {
+    color: var(--accent);
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+  }
+  .bottom-nav button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    border-radius: 2px;
+  }
+
+  /* SECTIONS */
+  section {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    overflow: hidden;
+  }
+
+  /* BACKGROUNDS */
+  .main-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -1;
+    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+    overflow: hidden;
+  }
+  .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+    animation: floatOrb 18s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+  .bg-orb-1 {
+    width: 60vw; height: 60vw;
+    background: #0284c7; /* Sky Blue */
+    top: -20%; left: -10%;
+    animation-delay: 0s;
+  }
+  .bg-orb-2 {
+    width: 50vw; height: 50vw;
+    background: #4f46e5; /* Indigo */
+    bottom: -10%; right: -10%;
+    animation-delay: -5s;
+  }
+  .bg-orb-3 {
+    width: 40vw; height: 40vw;
+    background: #0f172a; /* Dark */
+    top: 40%; left: 40%;
+    animation-delay: -10s;
+    opacity: 0.8;
+  }
+
+  @keyframes floatOrb {
+    0%,100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, -40px) scale(1.1); }
+  }
+
+  /* HERO */
+  #home {
+    flex-direction: column;
+    text-align: center;
+    background: url('img/logo.jpg') no-repeat center center;
+    background-size: cover;
+    background-color: var(--bg-dark);
+    position: relative;
+  }
+  /* Professional Dark Overlay */
+  #home::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95));
+    z-index: 0;
+  }
+  
+  .hero-content {
+    z-index: 1; /* Bring text above overlay */
+  }
+  
+  .hero-content h1 {
+    font-size: 5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #e0f2fe, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    text-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+  }
+  .hero-content p {
+    font-size: 1.4rem;
+    color: var(--second);
+    max-width: 700px;
+    margin: 0 auto;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+
+  /* CONTENT BOX */
+  .content-box {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 60px;
+    border-radius: 20px;
+    width: 45%;
+    box-shadow: var(--shadow);
+    z-index: 10;
+    transition: 0.3s;
+  }
+  .content-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    border-color: var(--accent);
+  }
+  .content-box h2 {
+    font-size: 2.5rem;
+    margin-bottom: 24px;
+    color: white;
+    letter-spacing: -1px;
+  }
+  .content-box p {
+    line-height: 1.7;
+    color: var(--second);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+
+  /* CHI SIAMO LAYOUT */
+  #chi-siamo {
+    justify-content: space-between;
+    padding: 0; /* Full width */
+  }
+
+  /* Specific styling for About Us text box to touch left edge */
+  #chi-siamo .content-box {
+    width: 50%;
+    margin-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 80px; /* Add internal padding to balance text position */
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .founders-container {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5%; /* Keep visual content balanced */
+  }
+  .founder-circle {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(30, 41, 59, 0.5);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 10px;
+  }
+  .founder-circle img {
+    width: 100%; height: 100%; object-fit: cover;
+    position: absolute; top:0; left:0;
+    transition: 0.4s;
+    opacity: 0.7;
+    filter: grayscale(100%); /* Professional B&W look initially */
+  }
+  .founder-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--accent-glow);
+    border-color: var(--accent);
+    z-index: 5;
+  }
+  .founder-circle:hover img {
+    opacity: 1;
+    filter: grayscale(0%); /* Color on hover */
+  }
+
+  /* PRODOTTI LAYOUT */
+  #prodotti {
+    justify-content: space-between;
+    padding: 0; /* Full width */
+    background: transparent;
+  }
+  
+  /* Specific styling for Product text box to touch right edge */
+  #prodotti .content-box {
+    width: 50%;
+    margin-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-right: 80px; /* Add internal padding to balance text position */
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .products-visual {
+    width: 40%;
+    height: 500px;
+    position: relative;
+    margin-left: 5%; /* Keep visual content balanced */
+  }
+  .product-card {
+    position: absolute;
+    width: 200px; height: 260px;
+    background: rgba(2, 44, 34, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 20px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    color: var(--primary);
+  }
+  .product-card:nth-child(1) { transform: translate(-90%, -60%) rotate(-10deg); z-index: 1; }
+  .product-card:nth-child(2) { transform: translate(-50%, -50%) scale(1.1); z-index: 2; box-shadow: 0 25px 50px rgba(0,0,0,0.5); background: rgba(2, 44, 34, 0.8); }
+  .product-card:nth-child(3) { transform: translate(-10%, -40%) rotate(10deg); z-index: 1; }
+  
+  .product-card:hover {
+    z-index: 10;
+    transform: translate(-50%, -50%) scale(1.2) !important;
+    background: rgba(2, 44, 34, 0.95);
+    border-color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .product-img {
+    width: 80%;
+    height: 120px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+
+  /* CAROUSEL STYLES */
+  #vetrina {
+    background: transparent;
+    flex-direction: column;
+  }
+  .carousel-wrapper {
+    width: 100%;
+    max-width: 1200px;
+  }
+  .carousel-container {
+    position: relative;
+    height: 350px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-track-container {
+    width: 80%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    /* gradient masks for smooth fade */
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    list-style: none;
+    transition: transform 0.4s ease-in-out;
+  }
+  .carousel-slide {
+    min-width: 250px;
+    height: 300px;
+    background: rgba(2, 44, 34, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-slide:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 0 20px var(--accent-glow);
+    border-color: var(--accent);
+    background: rgba(2, 44, 34, 0.9);
+  }
+  .slide-content {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+  }
+  .slide-content img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.05);
+  }
+  .slide-content h4 {
+    color: var(--primary);
+    font-size: 1.2rem;
+  }
+  .carousel-btn {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: 0.2s;
+    z-index: 10;
+    color: var(--accent);
+  }
+  .carousel-btn:hover {
+    background: var(--accent);
+    color: #022c22;
+    box-shadow: 0 0 15px var(--accent);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  
+  .modal-content {
+    background: white;
+    width: 90%; max-width: 500px;
+    border-radius: 24px;
+    padding: 0;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    transform: scale(0.9);
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+  }
+  .modal-overlay.active .modal-content { transform: scale(1); }
+  
+  .modal-img-container {
+    height: 250px;
+    background: var(--light);
+    position: relative;
+  }
+  .modal-img-container img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .modal-body {
+    padding: 30px;
+  }
+  .modal-body h3 {
+    font-size: 1.8rem; margin-bottom: 10px;
+    color: var(--primary);
+  }
+  .modal-body p {
+    color: var(--second);
+    line-height: 1.6;
+  }
+  .close-modal {
+    position: absolute; top: 20px; right: 20px;
+    width: 40px; height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: 0.2s;
+  }
+  .close-modal:hover { transform: rotate(90deg); }
+
+  /* RESPONSIVE */
+  @media(max-width: 900px) {
+    section { flex-direction: column; justify-content: flex-start; padding-top: 100px; }
+    .content-box { width: 90%; margin-bottom: 40px; }
+    .founders-container { width: 100%; flex-direction: row; }
+    .products-visual { width: 100%; height: 300px; order: -1; margin-bottom: 40px; }
+    #chi-siamo { flex-direction: column; }
+    #prodotti { flex-direction: column-reverse; } /* Box on bottom for Prodotti on mobile? keeping standard flow */
+    .hero-content h1 { font-size: 2.8rem; }
+    .product-card { height: 200px; width: 160px; }
+    
+    /* PARTNERSHIP RESPONSIVE */
+    .partners-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  }
+
+  /* PARTNERSHIP SECTION */
+  #partnership {
+    flex-direction: column;
+    padding: 100px 10%;
+    background: transparent;
+  }
+  .partners-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    width: 100%;
+    margin-top: 50px;
+  }
+  .partner-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  .partner-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .partner-logo {
+    width: 60px; height: 60px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--bg-dark);
+    font-size: 1.2rem;
+  }
+  .partner-name {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* MACHINES SECTION */
+  #machines {
+    justify-content: space-between;
+    padding: 0;
+    margin-top: 50px;
+  }
+  /* Specific styling for Machines text box to touch LEFT edge (reusing About Us style pattern) */
+  #machines .content-box {
+    width: 50%;
+    margin-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 80px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  .machine-visual {
+    width: 40%;
+    margin-right: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .machine-placeholder {
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .machine-placeholder::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 60%);
+    animation: rotateGlow 10s linear infinite;
+  }
+  @keyframes rotateGlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* FOOTER */
+  footer {
+    background: #020617;
+    border-top: 1px solid var(--glass-border);
+    padding: 60px 10%;
+    margin-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .footer-col {
+    flex: 1;
+    min-width: 200px;
+  }
+  .footer-col h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+  }
+  .footer-col ul {
+    list-style: none;
+  }
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+  .footer-col ul li a {
+    color: var(--second);
+    text-decoration: none;
+    transition: 0.2s;
+  }
+  .footer-col ul li a:hover {
+    color: var(--accent);
+  }
+  .social-icons {
+    display: flex;
+    gap: 15px;
+  }
+  .social-icon {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+    border: 1px solid transparent;
+  }
+  .social-icon:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+  .copyright {
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: var(--second);
+    font-size: 0.9rem;
+  }</style>
+</head>
+<body>
+
+  <!-- BACKGROUND ELEMENTS -->
+  <div class="main-bg">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav class="bottom-nav">
+
+    <button onclick="scrollToId('home')" id="btn-home" class="active">Home</button>
+    <button onclick="scrollToId('chi-siamo')" id="btn-chi-siamo">About Us</button>
+    <button onclick="scrollToId('partnership')" id="btn-partnership">Partnership</button>
+    <button onclick="scrollToId('machines')" id="btn-machines">Machines</button>
+    <button onclick="scrollToId('prodotti')" id="btn-prodotti">Our Products</button>
+  </nav>
+
+  <!-- HOME SECTION -->
+  <section id="home">
+    <!-- Logo is now background -->
+    <div class="fade-in hero-content">
+      <h1>MindTheSnack</h1>
+      <p>The healthy vending revolution.<br>Natural, tasty, and sustainable products for your break.</p>
+    </div>
+  </section>
+
+  <!-- CHI SIAMO SECTION -->
+  <section id="chi-siamo">
+    <div class="content-box">
+      <h2>About Us</h2>
+      <p>We were born with a simple mission: to make snack breaks a moment of well-being. We select only the best natural, organic, and low-environmental-impact products.</p>
+      <p>We believe vending shouldn't be synonymous with junk food, but an opportunity to recharge with clean energy.</p>
+    </div>
+    
+    <div class="founders-container">
+      <div class="founder-circle" onclick="openModal('founder1')">
+        <img src="img/founder1.jpg" onerror="this.style.display='none'">
+      </div>
+      <div class="founder-circle" onclick="openModal('founder2')">
+        <img src="img/founder2.jpg" onerror="this.style.display='none'">
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERSHIP SECTION -->
+  <section id="partnership">
+    <div style="display:flex; flex-direction:column; align-items:center; text-align:center; max-width:800px; margin:0 auto; padding:40px; background:var(--glass); border:1px solid var(--glass-border); border-radius:24px; box-shadow:var(--shadow);">
+      <img src="img/timetohelplogo.jpg" alt="Time to Help Logo" style="width:150px; height:150px; object-fit:contain; border-radius:50%; background:white; padding:10px; margin-bottom:30px; box-shadow:0 0 20px var(--accent-glow);">
+      
+      <h2 style="font-size:2.5rem; color:white; margin-bottom:20px; line-height:1.2;">Our Heartbeat:<br><span style="color:var(--accent);">Partnership with "Time to Help"</span></h2>
+      
+      <p style="color:var(--second); font-size:1.1rem; line-height:1.8; margin-bottom:20px;">
+        With every snack sold, you join us in giving back. We donate <strong>£0.05</strong> from every purchase to our official charity partner, <strong>"Time to Help."</strong>
+      </p>
+      
+      <p style="color:var(--second); font-size:1.1rem; line-height:1.8;">
+        This incredible London-based association transforms these contributions into nutritious meals for the city’s homeless population. Choosing <strong>MindTheSnack</strong> means your team’s break time directly supports those in need.
+      </p>
+    </div>
+  </section>
+
+  <!-- PRODOTTI SECTION -->
+  <section id="prodotti">
+    <div class="products-visual">
+      <div class="product-card">
+        <img src="img/snack1.jpg" class="product-img" onerror="this.style.opacity='0'">
+        <h4>Organic Bars</h4>
+        <small>100% Natural</small>
+      </div>
+      <div class="product-card">
+         <img src="img/snack2.jpg" class="product-img" onerror="this.style.opacity='0'">
+        <h4>Energy Drink</h4>
+        <small>Zero Sugar</small>
+      </div>
+      <div class="product-card">
+         <img src="img/snack3.jpg" class="product-img" onerror="this.style.opacity='0'">
+        <h4>Fruit Mix</h4>
+        <small>Premium</small>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h2>Our Products</h2>
+      <p>From protein bars to premium dried fruit, every product in our vending machines is chosen to guarantee taste and health.</p>
+      <p>We collaborate with the best brands in the healthy sector to offer you an always varied and tasty selection.</p>
+      <button onclick="scrollToId('vetrina')" style="margin-top:20px; padding:12px 24px; background:var(--accent); color:var(--bg-dark); border:none; border-radius:12px; font-weight:600; cursor:pointer; box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4); transition:0.3s;">Discover Catalog</button>
+    </div>
+  </section>
+
+  <!-- MACHINES SECTION -->
+  <section id="machines">
+    <div class="content-box">
+      <h2>Our Machines: Small Footprint, Big Impact</h2>
+      <p>Our vending machines are thoughtfully designed for modern spaces:</p>
+      <ul style="list-style:none; margin-top:20px;">
+        <li style="margin-bottom:15px; display:flex; align-items:flex-start; gap:10px;">
+          <span style="color:var(--accent); font-weight:bold;">✔</span> 
+          <span><strong>Slim & Compact:</strong> Fitting seamlessly into corridors, breakout areas, and lobbies without crowding.</span>
+        </li>
+        <li style="margin-bottom:15px; display:flex; align-items:flex-start; gap:10px;">
+          <span style="color:var(--accent); font-weight:bold;">✔</span> 
+          <span><strong>Environmentally Friendly:</strong> Built with sustainable materials and energy-efficient refrigerated systems to keep drinks cool and our carbon footprint lower.</span>
+        </li>
+        <li style="margin-bottom:15px; display:flex; align-items:flex-start; gap:10px;">
+          <span style="color:var(--accent); font-weight:bold;">✔</span> 
+          <span><strong>Quiet & Reliable:</strong> Designed to serve, not disrupt, your environment.</span>
+        </li>
+      </ul>
+    </div>
+    <div class="machine-visual">
+       <img src="img/vending_machine_modern.png" alt="Modern Vending Machine" style="width:100%; height:auto; border-radius:20px; box-shadow:0 0 30px rgba(56,189,248,0.2); border:1px solid var(--glass-border);">
+    </div>
+  </section>
+
+  <!-- VETRINA CAROUSEL SECTION -->
+  <section id="vetrina">
+    <div class="carousel-wrapper">
+      <h2 style="text-align:center; font-size:2.5rem; color:white; margin-bottom:40px; letter-spacing:-1px;">Explore the Taste</h2>
+      
+      <div class="carousel-container">
+        <button class="carousel-btn prev" onclick="moveCarousel(-1)">❮</button>
+        <div class="carousel-track-container">
+          <ul class="carousel-track">
+            <li class="carousel-slide" onclick="openModal('snack1')">
+              <div class="slide-content">
+                <img src="img/snack1.jpg">
+                <h4>Organic Bar</h4>
+              </div>
+            </li>
+            <li class="carousel-slide" onclick="openModal('snack2')">
+              <div class="slide-content">
+                <img src="img/snack2.jpg">
+                <h4>Detox Water</h4>
+              </div>
+            </li>
+            <li class="carousel-slide" onclick="openModal('snack3')">
+              <div class="slide-content">
+                <img src="img/snack3.jpg">
+                <h4>Nuts Mix</h4>
+              </div>
+            </li>
+            <li class="carousel-slide" onclick="openModal('snack1')">
+              <div class="slide-content">
+                <img src="img/snack1.jpg">
+                <h4>Energy Bar</h4>
+              </div>
+            </li>
+            <li class="carousel-slide" onclick="openModal('snack2')">
+              <div class="slide-content">
+                <img src="img/snack2.jpg">
+                <h4>Relax Drink</h4>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <button class="carousel-btn next" onclick="moveCarousel(1)">❯</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-img-container">
+        <div class="close-modal" onclick="closeModal()">✕</div>
+        <img id="modal-img" src="" onerror="this.src='https://via.placeholder.com/500x300?text=No+Image'">
+      </div>
+      <div class="modal-body" style="background: #1e293b; color: #cbd5e1;"> <!-- Force dark bg for readability -->
+        <h3 id="modal-title" style="color:white; margin-bottom:10px;">Title</h3>
+        <p id="modal-desc" style="line-height:1.6;">Description...</p>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- FOOTER -->
+  <footer>
+    <!-- <div class="footer-col">
+      <h3>MindTheSnack</h3>
+      <p style="color:var(--second); line-height:1.6;">Use Code: <strong>SNACK20</strong><br>for your first purchase on the app.</p>
+    </div> -->
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#chi-siamo">About Us</a></li>
+        <li><a href="#prodotti">Products</a></li>
+        <li><a href="#partnership">Partnership</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Contact</h3>
+      <ul>
+        <li><a href="mailto:info@mindthesnack.com">customerservice.mindthesnack@gmail.com</a></li>
+        <li><a href="tel:+39123456789">07379509885 / 07597113757</a></li>
+        <li>London, United Kingdom</li>
+      </ul>
+    </div>
+    <!-- <div class="footer-col">
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <a href="#" class="social-icon">IG</a>
+        <a href="#" class="social-icon">FB</a>
+        <a href="#" class="social-icon">LI</a>
+      </div>
+    </div> -->
+    <div class="copyright">
+      &copy; 2026 MindTheSnack. All rights reserved.
+    </div>
+  </footer>
+
+<script>
+  // SCROLL FUNCTION
+  function scrollToId(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ACTIVE NAV ON SCROLL
+  const sections = document.querySelectorAll('section');
+  const navBtns = document.querySelectorAll('.bottom-nav button');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navBtns.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('id') === `btn-${current}`) {
+        btn.classList.add('active');
+      }
+    });
+  });
+
+  // CAROUSEL LOGIC
+  let track = document.querySelector('.carousel-track');
+  let slidePosition = 0;
+  
+  function moveCarousel(direction) {
+     const slideWidth = 270;
+     const visibleSlides = Math.floor(document.querySelector('.carousel-track-container').offsetWidth / slideWidth);
+     const slides = document.querySelectorAll('.carousel-slide');
+     const totalSlides = slides.length;
+     
+     slidePosition += direction;
+     
+     // Bounds
+     if(slidePosition < 0) slidePosition = 0;
+     if(slidePosition > totalSlides - visibleSlides && totalSlides > visibleSlides) slidePosition = totalSlides - visibleSlides;
+     if(totalSlides <= visibleSlides) slidePosition = 0;
+     
+     if(track) track.style.transform = `translateX(-${slidePosition * slideWidth}px)`;
+  }
+
+  // MODAL DATA
+  const modalData = {
+    founder1: {
+      title: "Mariano Leone - CEO",
+      desc: "Mariano founded MindTheSnack with the vision of changing the vending world. Passionate about sports and nutrition.",
+      img: "img/founder1.jpg"
+    },
+    founder2: {
+      title: "Vito Gasparro - COO",
+      desc: "Vito manages the entire logistics chain ensuring products arrive fresh every day. Sustainability expert.",
+      img: "img/founder2.jpg"
+    },
+    snack1: {
+      title: "Organic Protein Bar",
+      desc: "A delicious bar with 20g of vegetable protein, no added sugar. Ideal for post-workout.",
+      img: "img/snack1.jpg"
+    },
+    snack2: {
+      title: "Ginger & Lemon Detox Water",
+      desc: "Refreshing and purifying. Only natural ingredients to give you energy without caffeine.",
+      img: "img/snack2.jpg"
+    },
+    snack3: {
+      title: "Premium Nuts Mix",
+      desc: "A selected mix of walnuts, almonds, and cashews. Rich in Omega-3 and perfect for curbing hunger.",
+      img: "img/snack3.jpg"
+    }
+  };
+
+  function openModal(key) {
+    const data = modalData[key];
+    if(!data) return;
+    document.getElementById('modal-title').innerText = data.title;
+    document.getElementById('modal-desc').innerText = data.desc;
+    document.getElementById('modal-img').src = data.img;
+    
+    const overlay = document.getElementById('modal-overlay');
+    overlay.style.display = "flex";
+    // Trigger reflow
+    void overlay.offsetWidth; 
+    overlay.classList.add('active');
+  }
+
+  function closeModal() {
+    const overlay = document.getElementById('modal-overlay');
+    overlay.classList.remove('active');
+    setTimeout(() => {
+      overlay.style.display = "none";
+    }, 300);
+  }
+</script>
+</body>
+</html>
