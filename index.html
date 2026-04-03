@@ -38,7 +38,7 @@
     position: fixed;
     bottom: 24px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%);  
     background: rgba(15, 23, 42, 0.8);
     padding: 12px 30px;
     border-radius: 50px;
@@ -222,16 +222,15 @@
   /* CHI SIAMO LAYOUT */
   #chi-siamo {
     justify-content: space-between;
-    padding: 0; /* Full width */
+    padding: 0; 
   }
 
-  /* Specific styling for About Us text box to touch left edge */
   #chi-siamo .content-box {
     width: 50%;
     margin-left: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    padding-left: 80px; /* Add internal padding to balance text position */
+    padding-left: 80px;
     padding-top: 100px;
     padding-bottom: 100px;
   }
@@ -243,7 +242,7 @@
     gap: 40px;
     align-items: center;
     justify-content: center;
-    margin-right: 5%; /* Keep visual content balanced */
+    margin-right: 5%;
     object-position: 50% 80%;
   }
   .founder-circle {
@@ -272,7 +271,7 @@
     transition: 0.4s;
     object-position: 50% 20%;
     opacity: 0.7;
-    filter: grayscale(100%); /* Professional B&W look initially */
+    filter: grayscale(100%); 
   }
   .founder-circle:hover {
     transform: scale(1.1);
@@ -282,23 +281,22 @@
   }
   .founder-circle:hover img {
     opacity: 1;
-    filter: grayscale(0%); /* Color on hover */
+    filter: grayscale(0%); 
   }
 
   /* PRODOTTI LAYOUT */
   #prodotti {
     justify-content: space-between;
-    padding: 0; /* Full width */
+    padding: 0; 
     background: transparent;
   }
   
-  /* Specific styling for Product text box to touch right edge */
   #prodotti .content-box {
     width: 50%;
     margin-right: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    padding-right: 80px; /* Add internal padding to balance text position */
+    padding-right: 80px; 
     padding-top: 100px;
     padding-bottom: 100px;
   }
@@ -307,12 +305,12 @@
     width: 40%;
     height: 500px;
     position: relative;
-    margin-left: 5%; /* Keep visual content balanced */
+    margin-left: 5%;
   }
   .product-card {
     position: absolute;
     width: 200px; height: 260px;
-    background: rgba(2, 44, 34, 0.6);
+    background: rgba(2, 6, 44, 0.6);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
@@ -329,13 +327,13 @@
     color: var(--primary);
   }
   .product-card:nth-child(1) { transform: translate(-90%, -60%) rotate(-10deg); z-index: 1; }
-  .product-card:nth-child(2) { transform: translate(-50%, -50%) scale(1.1); z-index: 2; box-shadow: 0 25px 50px rgba(0,0,0,0.5); background: rgba(2, 44, 34, 0.8); }
+  .product-card:nth-child(2) { transform: translate(-50%, -50%) scale(1.1); z-index: 2; box-shadow: 0 25px 50px rgba(0,0,0,0.5); background: rgba(2, 4, 34, 0.8); }
   .product-card:nth-child(3) { transform: translate(-10%, -40%) rotate(10deg); z-index: 1; }
   
   .product-card:hover {
     z-index: 10;
     transform: translate(-50%, -50%) scale(1.2) !important;
-    background: rgba(2, 44, 34, 0.95);
+    background: rgba(2, 4, 44, 0.6);
     border-color: var(--accent);
     box-shadow: 0 0 20px var(--accent-glow);
   }
@@ -346,6 +344,8 @@
     background: rgba(255,255,255,0.05);
     border-radius: 12px;
     margin-bottom: 10px;
+    object-position: 80% 20%;
+
     object-fit: cover;
   }
 
@@ -385,7 +385,7 @@
   .carousel-slide {
     min-width: 250px;
     height: 300px;
-    background: rgba(2, 44, 34, 0.6);
+    background: rgba(2, 2, 34, 0.6);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 20px;
@@ -400,7 +400,7 @@
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 0 20px var(--accent-glow);
     border-color: var(--accent);
-    background: rgba(2, 44, 34, 0.9);
+    background: rgba(2, 2, 34, 0.9);
   }
   .slide-content {
     text-align: center;
@@ -453,28 +453,35 @@
   
   .modal-content {
     background: white;
-    width: 90%; max-width: 500px;
+    width: min(92vw, 760px);
+    max-height: min(88vh, 820px);
     border-radius: 24px;
     padding: 0;
     box-shadow: 0 25px 50px rgba(0,0,0,0.4);
     transform: scale(0.9);
     transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
   .modal-overlay.active .modal-content { transform: scale(1); }
   
   .modal-img-container {
-    height: 250px;
+    height: clamp(240px, 34vh, 360px);
     background: var(--light);
     position: relative;
-    object-position: 50% 20%; 
+    object-position: 50% 20%;
+    flex: 0 0 auto;
   }
   .modal-img-container img {
     width: 100%; height: 100%; object-fit: cover;
-    object-position: 50% 20%;
+    object-position: 50% 58%;
   }
   .modal-body {
-    padding: 30px;
+    padding: 32px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1 1 auto;
   }
   .modal-body h3 {
     font-size: 1.8rem; margin-bottom: 10px;
@@ -705,6 +712,15 @@
     .partners-grid { grid-template-columns: 1fr; }
     .product-card { width: 140px; height: 190px; }
     .content-box h2 { font-size: 2rem; }
+    .modal-content {
+      width: 94vw;
+      max-height: 90vh;
+      border-radius: 18px;
+    }
+    .modal-img-container {
+      height: 220px;
+    }
+    .modal-body { padding: 22px; }
   }</style>
 </head>
 <body>
@@ -761,7 +777,7 @@
       <h2 style="font-size:2.5rem; color:white; margin-bottom:20px; line-height:1.2;">Our Heartbeat:<br><span style="color:var(--accent);">Partnership with "Time to Help"</span></h2>
       
       <p style="color:var(--second); font-size:1.1rem; line-height:1.8; margin-bottom:20px;">
-        With every snack sold, you join us in giving back. We donate <strong>£0.05</strong> from every purchase to our official charity partner, <strong>"Time to Help."</strong>
+        With every snack sold, you join us in giving back. We donate <strong>£0.05</strong> from every purchase to our official charity partner <strong>Time to Help"</strong>
       </p>
       
       <p style="color:var(--second); font-size:1.1rem; line-height:1.8;">
@@ -773,15 +789,16 @@
   <!-- PRODOTTI SECTION -->
   <section id="prodotti">
     <div class="products-visual">
-      <div class="product-card">
-        <img src="img/snack1.jpg" class="product-img " onerror="this.style.opacity='0'">
-        <h4>Organic Bars</h4>
-        <small>100% Natural</small>
-      </div>
+     
       <div class="product-card">
          <img src="img/snack2.jpg" class="product-img" onerror="this.style.opacity='0'">
         <h4>Energy Drink</h4>
         <small>Zero Sugar</small>
+      </div>
+       <div class="product-card">
+        <img src="img/snack1.jpg" class="product-img " onerror="this.style.opacity='0'">
+        <h4>Brite: Natural Energy Drink</h4>
+        <small>100% Natural Ingredients</small>
       </div>
       <div class="product-card">
          <img src="img/snack3.jpg" class="product-img" onerror="this.style.opacity='0'">
@@ -835,31 +852,49 @@
             <li class="carousel-slide" onclick="openModal('snack1')">
               <div class="slide-content">
                 <img src="img/snack1.jpg">
-                <h4>Organic Bar</h4>
+                <h4>Brite: Natural Energy Drink</h4>
               </div>
             </li>
-            <li class="carousel-slide" onclick="openModal('snack2')">
+            <li class="carousel-slide" onclick="openModal('product1')">
               <div class="slide-content">
-                <img src="img/snack2.jpg">
-                <h4>Detox Water</h4>
+                <img src="img/products/RK-OOH-250ml-all-apple-shadow.png">
+                <h4>RK All Apple</h4>
               </div>
             </li>
-            <li class="carousel-slide" onclick="openModal('snack3')">
+            <li class="carousel-slide" onclick="openModal('product2')">
               <div class="slide-content">
-                <img src="img/snack3.jpg">
-                <h4>Nuts Mix</h4>
+                <img src="img/products/RK-OOH-250ml-berry-blush-shadow.png">
+                <h4>RK Berry Blush</h4>
               </div>
             </li>
-            <li class="carousel-slide" onclick="openModal('snack1')">
+            <li class="carousel-slide" onclick="openModal('product3')">
               <div class="slide-content">
-                <img src="img/snack1.jpg">
-                <h4>Energy Bar</h4>
+                <img src="img/products/RK-OOH-250ml-easy-green-shadow.png">
+                <h4>RK Easy Green</h4>
               </div>
             </li>
-            <li class="carousel-slide" onclick="openModal('snack2')">
+            <li class="carousel-slide" onclick="openModal('product4')">
               <div class="slide-content">
-                <img src="img/snack2.jpg">
-                <h4>Relax Drink</h4>
+                <img src="img/products/RK-OOH-250ml-go-glow-shadow.png">
+                <h4>RK Go Glow</h4>
+              </div>
+            </li>
+            <li class="carousel-slide" onclick="openModal('product5')">
+              <div class="slide-content">
+                <img src="img/products/RK-OOH-250ml-only-orange-shadow.png">
+                <h4>RK Only Orange</h4>
+              </div>
+            </li>
+            <li class="carousel-slide" onclick="openModal('product6')">
+              <div class="slide-content">
+                <img src="img/products/RK-coconut-water-classic-330ml-shadow 2.png">
+                <h4>RK Coconut Water</h4>
+              </div>
+            </li>
+            <li class="carousel-slide" onclick="openModal('product7')">
+              <div class="slide-content">
+                <img src="img/products/EMILY-veg-crisps-rainbow-roots-30g 2.png">
+                <h4>EMILY Veg Crisps</h4>
               </div>
             </li>
           </ul>
@@ -889,7 +924,6 @@
   <footer>
     <div class="footer-col">
       <h3>MindTheSnack</h3>
-      <p style="color:var(--second); line-height:1.6;">Use Code: <strong>SNACK20</strong><br>for your first purchase on the app.</p>
     </div>
 
     <div class="footer-col">
@@ -999,8 +1033,8 @@
       img: "img/founder2.jpg"
     },
     snack1: {
-      title: "Organic Protein Bar",
-      desc: "A delicious bar with 20g of vegetable protein, no added sugar. Ideal for post-workout.",
+      title: "Brite: Natural Energy Drink",
+      desc: "Try Brite – truly natural, great-tasting nootropic drink that boosts mental performance without any of the downsides.",
       img: "img/snack1.jpg"
     },
     snack2: {
@@ -1012,6 +1046,41 @@
       title: "Premium Nuts Mix",
       desc: "A selected mix of walnuts, almonds, and cashews. Rich in Omega-3 and perfect for curbing hunger.",
       img: "img/snack3.jpg"
+    },
+    product1: {
+      title: "RK All Apple",
+      desc: "Pure refreshment. A blend of the finest apple juice with no added sugars. Naturally energizing and delicious.",
+      img: "img/products/RK-OOH-250ml-all-apple-shadow.png"
+    },
+    product2: {
+      title: "RK Berry Blush",
+      desc: "Mixed berry goodness. Rich in antioxidants and natural flavor, perfect for a healthy break.",
+      img: "img/products/RK-OOH-250ml-berry-blush-shadow.png"
+    },
+    product3: {
+      title: "RK Easy Green",
+      desc: "Green juice at its finest. Packed with vegetables and fruits for a nutrient boost.",
+      img: "img/products/RK-OOH-250ml-easy-green-shadow.png"
+    },
+    product4: {
+      title: "RK Go Glow",
+      desc: "Energize your day with our premium blend of exotic fruits and wellness ingredients.",
+      img: "img/products/RK-OOH-250ml-go-glow-shadow.png"
+    },
+    product5: {
+      title: "RK Only Orange",
+      desc: "Fresh squeezed orange juice taste. Natural vitamin C boost for your wellness routine.",
+      img: "img/products/RK-OOH-250ml-only-orange-shadow.png"
+    },
+    product6: {
+      title: "RK Coconut Water",
+      desc: "Pure coconut water with natural electrolytes. Perfect for hydration and recovery.",
+      img: "img/products/RK-coconut-water-classic-330ml-shadow 2.png"
+    },
+    product7: {
+      title: "EMILY Veg Crisps - Rainbow Roots",
+      desc: "Crispy, delicious vegetable crisps made from rainbow roots. A healthier snacking choice.",
+      img: "img/products/EMILY-veg-crisps-rainbow-roots-30g 2.png"
     }
   };
 
