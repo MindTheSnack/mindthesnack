@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import Modal from './Modal'
+import { getImagePath } from '@/lib/imagePath'
 
 const products = [
   {
@@ -64,7 +65,7 @@ export default function Products() {
                 <div className="relative h-48 sm:h-56 md:h-72 mb-3 sm:mb-4 md:mb-6 rounded-lg sm:rounded-2xl overflow-hidden border border-glass bg-dark-card/50 group-hover:border-accent-cyan/50 transition-all duration-300">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
                   <Image
-                    src={product.image}
+                    src={getImagePath(product.image)}
                     alt={product.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-300"

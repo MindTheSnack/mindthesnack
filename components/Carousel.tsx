@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import Modal from './Modal'
+import { getImagePath } from '@/lib/imagePath'
 
 const carouselProducts = [
   {
@@ -90,7 +91,7 @@ export default function Carousel() {
                     <div className="rounded-lg sm:rounded-2xl border border-glass bg-dark-card/50 group-hover/card:border-accent-cyan/50 transition-all duration-300 overflow-hidden p-4 sm:p-5 h-full flex flex-col">
                       <div className="relative w-full h-32 sm:h-40 md:h-48 mb-3 sm:mb-4 rounded-lg overflow-hidden bg-gradient-to-br from-dark-bg to-dark-card/50 flex items-center justify-center">
                         <Image
-                          src={product.image}
+                          src={getImagePath(product.image)}
                           alt={product.name}
                           fill
                           className="object-contain group-hover/card:scale-110 transition-transform duration-300"

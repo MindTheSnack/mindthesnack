@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useEffect } from 'react'
+import { getImagePath } from '@/lib/imagePath'
 
 interface ModalProps {
   isOpen: boolean
@@ -55,7 +56,7 @@ export default function Modal({ isOpen, onClose, title, description, imagePath, 
             style={{ overflow: 'hidden' }}
           >
             <Image
-              src={imagePath}
+              src={getImagePath(imagePath)}
               alt={title}
               fill
               className="object-cover"

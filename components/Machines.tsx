@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
+import { getImagePath } from '@/lib/imagePath'
 
 const machines = [
   {
@@ -92,7 +93,7 @@ export default function Machines() {
                       }`}
                     >
                       <Image
-                        src={machine.image}
+                        src={getImagePath(machine.image)}
                         alt={machine.name}
                         fill
                         className="object-contain p-8"

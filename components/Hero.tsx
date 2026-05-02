@@ -1,12 +1,14 @@
 'use client'
 
+import { getImagePath } from '@/lib/imagePath'
+
 export default function Hero() {
   return (
     <section
       id="home"
       className="relative py-20 md:py-32 lg:py-48 flex flex-col items-center justify-center overflow-hidden min-h-screen md:min-h-auto"
       style={{
-        backgroundImage: 'url(/img/logo.jpg)',
+        backgroundImage: `url('${getImagePath('/img/logo.jpg')}')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
