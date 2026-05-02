@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import Modal from './Modal'
+import { getImagePath } from '@/lib/imagePath'
 
 const founders = [
   {
@@ -130,7 +131,7 @@ export default function AboutUs() {
                     <div className="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity" />
 
                     <Image
-                      src={founder.image}
+                      src={getImagePath(founder.image)}
                       alt={founder.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"

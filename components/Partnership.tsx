@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { getImagePath } from '@/lib/imagePath'
 
 export default function Partnership() {
   return (
@@ -16,7 +17,7 @@ export default function Partnership() {
               <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent-cyan/20 to-accent-glow/10 rounded-full blur-2xl" />
                 <Image
-                  src="/img/timetohelplogo.jpg"
+                  src={getImagePath('/img/timetohelplogo.jpg')}
                   alt="Time to Help Logo"
                   fill
                   className="object-contain rounded-full bg-white/5 p-4 sm:p-6"
