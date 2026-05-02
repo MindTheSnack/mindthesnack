@@ -2,7 +2,8 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   output: 'export',
-  distDir: '.next',
+  basePath: '/mindthesnack',
+  distDir: 'out',
   trailingSlash: true,
   images: {
     unoptimized: true,
